@@ -16,8 +16,8 @@ mpDraw = mp.solutions.drawing_utils
 faceDetection = mpFaceDetection.FaceDetection(0.75)
 
 
-BGremove = input("Remove BackGround ??(Yes: 1\ No: 0)\n")
-
+BGremove = input("\n\nRemove BackGround ??(Yes: 1 No: 0)\n\n")
+print()
 
 while True:
 	SUCCESS, img = cap.read()
