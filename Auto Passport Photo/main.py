@@ -16,7 +16,7 @@ mpDraw = mp.solutions.drawing_utils
 faceDetection = mpFaceDetection.FaceDetection(0.75)
 
 
-BGremove = input("Remove BackGround ??")
+BGremove = input("Remove BackGround ??(Yes: 1\ No: 0)\n")
 
 
 while True:
