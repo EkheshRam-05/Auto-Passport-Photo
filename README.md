@@ -10,7 +10,7 @@
 5. Math
 6. os
 
-### Data Iput
+### Data Input
 - _opencv_ is used to get user data
 - Data(image) can be fed into the program via video input device such as webcam etc., or via providing the path of image from the storage device
 
