@@ -83,17 +83,13 @@ def generatePP(imgFile, maxiFile = "maxi.jpg"):
 	maxi.save("{}_pp.jpg".format(imgFile))
 
 
-def RamoveBackground(frameImg, color):
-	image_index = 0
+def RamoveBackground(frameImg, image_index = 0):
 	mp_selfie_segmentation = mp.solutions.selfie_segmentation
 	selfie_segmentation = mp_selfie_segmentation.SelfieSegmentation(
 		model_selection=1)
 
 	image_path = 'BackGroundImages'
 	images = os.listdir(image_path)
-	image_index = 0
-	if color == "white":
-		image_index = 1
 	bg_image = cv2.imread(image_path+'/'+images[image_index])
 	results = selfie_segmentation.process(frameImg)
 
