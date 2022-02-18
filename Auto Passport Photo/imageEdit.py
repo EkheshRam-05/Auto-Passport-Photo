@@ -80,7 +80,7 @@ def generatePP(imgFile, maxiFile = "maxi.jpg"):
 	os.remove("border_crop_img_{}.jpg".format(imgFile))
 	os.remove("crop_img_{}.jpg".format(imgFile))
 	os.remove(imgFile)
-	maxi.save("./Passport Photo/{}_pp.jpg".format(imgFile))
+	maxi.save("{}_pp.jpg".format(imgFile))
 
 
 def RamoveBackground(frameImg, color):
