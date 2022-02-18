@@ -1,6 +1,5 @@
 # __Auto Passport Photo__
-
-    A python program which which generates passport photo.
+   A python program which which generates passport photo.
 
 ## Packages
 1. Mediapipe
