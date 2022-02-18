@@ -17,3 +17,9 @@
 ### Background 
 - By default White and Lightblue background images are available
 - For custom background a jpg image (sample.jpg) can be added to the _BackGroundImage_ folder
+
+### To Execute
+- python main.py \<Background image index\>
+
+### For Example
+- python main.py 0    
