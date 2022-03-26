@@ -1,7 +1,8 @@
+from turtle import right
 import cv2
 from PIL import Image
 import os
-from math import sqrt as s
+from math import sqrt
 import numpy as np
 import mediapipe as mp
 
@@ -11,55 +12,60 @@ def generatePP(imgFile, maxiFile = "maxi.jpg"):
 	maxi = Image.open(maxiFile)
 
 	# in Inches
-	DISPLAY_SIZE_DIAGONAL = 14
-
+	# sqrt((6 ** 2) + (4 ** 2)) Diagonal of a maxi in inch
+	DIAGONAL_INCHES = sqrt(52)
 
 	# Maxi dimensions
 	# depends upon the display dimension in inches
 	maxi_width, maxi_height = maxi.size
-	maxi_pixels_height = maxi_height
-	maxi_pixels_width = maxi_width
-	maxi_pixels_diagonal = s((maxi_pixels_width)**2 + (maxi_pixels_height)**2)
-	Maxi_PPI = maxi_pixels_diagonal / DISPLAY_SIZE_DIAGONAL
-	maxi_crop_width = 1.96 * Maxi_PPI
-	maxi_crop_height = 2.60 * Maxi_PPI
+	maxi_diagonal = sqrt((maxi_width)**2 + (maxi_height)**2)
+	Maxi_PPI = maxi_diagonal / DIAGONAL_INCHES
+	maxi_crop_width = 1.5 * Maxi_PPI
+	maxi_crop_height = 2.00 * Maxi_PPI
 
+	
 
 	# Camera/Video or Image's dimention
 	source_width, source_height = imgSource.size
-	source_pixels_height = source_height
-	source_pixels_width = source_width
-	source_pixels_diagonal = s((source_pixels_width)**2 + (source_pixels_height)**2)
-	source_PPI = source_pixels_diagonal / DISPLAY_SIZE_DIAGONAL
-	# source_crop_width = 1.96 * source_PPI
-	# source_crop_height = 2.60 * source_PPI
+	source_diagonal = sqrt((source_width)**2 + (source_height)**2)
+	source_PPI = source_diagonal / DIAGONAL_INCHES
+	source_crop_width = 1.5 * source_PPI
+	source_crop_height = 2.0 * source_PPI
+
+	left = int((source_width // 2) - (source_crop_width / 2))
+	upper = int((source_height // 2) - (source_crop_height / 2))
+	# right = int((maxi_width // 2) + (maxi_crop_width / 2))
+	# lower = int((maxi_height // 2) + (maxi_crop_height / 2))
+	right = left + source_crop_width
+	lower = upper + source_crop_height
 
 
-	# img_crop = Image.resize((maxi_crop_width, maxi_crop_height), resample=None, box=None, reducing_gap=None)
-	leftCord = int((source_width // 2) - (maxi_crop_width / 2))
-	rightCord = int((source_width // 2) + (maxi_crop_width / 2))
-	upCord = int((source_height // 2) - (maxi_crop_height / 2))
-	downCord = int((source_height // 2) + (maxi_crop_height / 2))
+	coord = left, upper, right, lower
 
-
-	coord = leftCord, upCord, rightCord, downCord
+	# print(left, upper, right, lower)
 	
 	img_crop = imgSource.crop(coord)
 
 	img_crop.save("crop_img_{}.jpg".format(imgFile))
 
-	crop_img = cv2.imread("crop_img_{}.jpg".format(imgFile))
+	img_crop = img_crop.resize((int(maxi_crop_width - Maxi_PPI*0.1),
+                             int(maxi_crop_height - Maxi_PPI*0.1)), resample=None, box=None, reducing_gap=None)
 
+	img_crop.save("crop_img_{}.jpg".format(imgFile))
+
+	# For Border
+	crop_img = cv2.imread("crop_img_{}.jpg".format(imgFile))
 	border  = cv2.copyMakeBorder(crop_img, 5, 5, 5, 5, cv2.BORDER_CONSTANT, value = [0, 0, 0])
-	
 	cv2.imwrite("border_crop_img_{}.jpg".format(imgFile), border)
+
+
 
 	img_crop = Image.open("border_crop_img_{}.jpg".format(imgFile))
 
 	resized_width, resized_height = img_crop.size
 
-	Xgap = (maxi_pixels_width - (resized_width * 4)) / 5
-	Ygap = (maxi_pixels_height - (resized_height * 2)) / 3
+	Xgap = (maxi_width - (resized_width * 4)) / 5
+	Ygap = (maxi_height - (resized_height * 2)) / 3
 
 	x = Xgap
 	y = Ygap
@@ -70,7 +76,7 @@ def generatePP(imgFile, maxiFile = "maxi.jpg"):
 		i += 1
 
 	x = Xgap
-	y = Ygap+(resized_height+Ygap)
+	y = resized_height+(Ygap*2)
 	i = 1
 	while i < 5:
 		maxi.paste(img_crop, (int(x), int(y)))
