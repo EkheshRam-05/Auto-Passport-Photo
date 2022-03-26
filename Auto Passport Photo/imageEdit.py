@@ -1,4 +1,3 @@
-from turtle import right
 import cv2
 from PIL import Image
 import os
@@ -41,8 +40,6 @@ def generatePP(imgFile, maxiFile = "maxi.jpg"):
 
 
 	coord = left, upper, right, lower
-
-	# print(left, upper, right, lower)
 	
 	img_crop = imgSource.crop(coord)
 
