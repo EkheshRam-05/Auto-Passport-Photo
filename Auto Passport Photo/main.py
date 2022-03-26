@@ -59,7 +59,8 @@ def main(bgColor):
 			cv2.imwrite(img_name, img)
 			print("{} written!".format(img_name))
 			img_counter += 1
-			imageEdit.generatePP(img_name)
+			imageEdit.generatePP(img_name, left, upper)
+
 
 		yes = 0
 		if frame.detections:
@@ -69,17 +70,16 @@ def main(bgColor):
 				ih, iw, ic = img.shape
 				source_diagonal = sqrt((iw)**2 + (ih)**2)
 				source_PPI = source_diagonal / sqrt(52)
-				source_crop_width = 1.5 * source_PPI
-				source_crop_height = 2.0 * source_PPI
-				print(ih, iw, ic)
-				left = int((iw // 2) - (source_crop_width / 2))
-				upper = int((ih // 2) - (source_crop_height / 2))
+				source_crop_width = 1.96 * source_PPI
+				source_crop_height = 2.60 * source_PPI
+				left = int((bboxC.xmin*iw)) - 50
+				upper = int((bboxC.ymin*ih)) - 100
 				bbox = int(left), int(upper), \
 					int(source_crop_width), int(source_crop_height)
 				Boundary(img, bbox)
+				# print(detection)
 
-
-		print(score)
+		# print(score)
 		k = cv2.waitKey(1)
 		cv2.imshow("Frame Face Detection", img)
 		if k % 256 == 27:

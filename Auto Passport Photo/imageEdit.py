@@ -1,3 +1,4 @@
+from turtle import right
 import cv2
 from PIL import Image
 import os
@@ -6,7 +7,7 @@ import numpy as np
 import mediapipe as mp
 
 
-def generatePP(imgFile, maxiFile = "maxi.jpg"):
+def generatePP(imgFile, left, upper, maxiFile = "maxi.jpg"):
 	imgSource = Image.open(imgFile)
 	maxi = Image.open(maxiFile)
 
@@ -28,11 +29,12 @@ def generatePP(imgFile, maxiFile = "maxi.jpg"):
 	source_width, source_height = imgSource.size
 	source_diagonal = sqrt((source_width)**2 + (source_height)**2)
 	source_PPI = source_diagonal / DIAGONAL_INCHES
-	source_crop_width = 1.5 * source_PPI
-	source_crop_height = 2.0 * source_PPI
+	source_crop_width = 1.96 * source_PPI
+	source_crop_height = 2.60 * source_PPI
 
-	left = int((source_width // 2) - (source_crop_width / 2))
-	upper = int((source_height // 2) - (source_crop_height / 2))
+
+	# left = int((source_width // 2) - (source_crop_width / 2))
+	# upper = int((source_height // 2) - (source_crop_height / 2))
 	# right = int((maxi_width // 2) + (maxi_crop_width / 2))
 	# lower = int((maxi_height // 2) + (maxi_crop_height / 2))
 	right = left + source_crop_width
@@ -40,6 +42,8 @@ def generatePP(imgFile, maxiFile = "maxi.jpg"):
 
 
 	coord = left, upper, right, lower
+
+	# print(left, upper, right, lower)
 	
 	img_crop = imgSource.crop(coord)
 
